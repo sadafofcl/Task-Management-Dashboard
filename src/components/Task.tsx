@@ -100,7 +100,7 @@ export default function Task() {
 
             <div className="mb-6">
               <label className="block font-bold mb-2 text-sm">
-                Date Of Creation
+                Date Of Creation*
               </label>
               <Field
                 name="date"
@@ -119,7 +119,7 @@ export default function Task() {
             </div>
 
             <div className="mb-6">
-              <label className="block font-bold mb-2 text-sm">Title</label>
+              <label className="block font-bold mb-2 text-sm">Title*</label>
               <Field
                 name="title"
                 type="text"
@@ -135,7 +135,7 @@ export default function Task() {
 
             <div className="mb-6">
               <label className="block font-bold mb-2 text-sm">
-                Description
+                Description*
               </label>
               <Field
                 name="description"
@@ -151,7 +151,7 @@ export default function Task() {
             </div>
 
             <div className="mb-6">
-              <label className="block font-bold mb-2 text-sm">Category</label>
+              <label className="block font-bold mb-2 text-sm">Category*</label>
               <Field
                 name="category"
                 as="select"
@@ -173,7 +173,7 @@ export default function Task() {
 
             <div className="mb-6">
               <label className="block font-bold mb-3 text-sm">
-                Would you like to create subtasks?
+                Would you like to create subtasks?*
               </label>
               <div className="flex gap-6 mb-2">
                 <label className="flex items-center gap-2 cursor-pointer">

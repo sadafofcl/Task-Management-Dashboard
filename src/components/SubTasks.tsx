@@ -109,7 +109,7 @@ export default function SubTasks() {
 
                         <div className="mb-5">
                           <label className="block font-bold mb-2 text-sm">
-                            Title
+                            Title*
                           </label>
                           <Field
                             name={`subtasks.${index}.title`}
@@ -126,7 +126,7 @@ export default function SubTasks() {
 
                         <div className="mb-5">
                           <label className="block font-bold mb-2 text-sm">
-                            Description
+                            Description*
                           </label>
                           <Field
                             name={`subtasks.${index}.description`}
@@ -143,7 +143,7 @@ export default function SubTasks() {
 
                         <div className="mb-5">
                           <label className="block font-bold mb-2 text-sm">
-                            Category
+                            Category*
                           </label>
                           <p className="text-xs mb-2 text-gray-600">
                             Select category from dropdown
@@ -169,7 +169,7 @@ export default function SubTasks() {
 
                         <div className="mb-5">
                           <label className="block font-bold mb-2 text-sm">
-                            Status
+                            Status*
                           </label>
                           <p className="text-xs mb-2 text-gray-600">
                             What's the status of your task?
