@@ -51,7 +51,7 @@ export default function Dashboard() {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSearch();
     }
@@ -62,7 +62,7 @@ export default function Dashboard() {
     setShowSearchResults(false);
   };
 
-  const searchResults = allTasks.filter((task:MainTaskType) => {
+  const searchResults = allTasks.filter((task: MainTaskType) => {
     const query = searchQuery.toLowerCase();
     return (
       task.title.toLowerCase().includes(query) ||
@@ -73,7 +73,7 @@ export default function Dashboard() {
         task.subtasks.some(
           (subtask) =>
             subtask.title.toLowerCase().includes(query) ||
-            subtask.description.toLowerCase().includes(query)
+            subtask.description.toLowerCase().includes(query),
         ))
     );
   });
@@ -107,7 +107,7 @@ export default function Dashboard() {
               placeholder="Search task by title, description, category..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyUp={handleKeyPress}
+              onKeyDown={handleKeyDown}
             />
             {searchQuery && (
               <button
@@ -156,7 +156,7 @@ export default function Dashboard() {
                 <p className="text-sm text-gray-600 mb-4">
                   Found {searchResults.length} task(s)
                 </p>
-                {searchResults.map((task:MainTaskType) => (
+                {searchResults.map((task: MainTaskType) => (
                   <div
                     key={task.id}
                     className="border-2 border-gray-300 rounded-lg p-4 hover:border-black transition-colors cursor-pointer"
@@ -281,7 +281,7 @@ export default function Dashboard() {
                   </div>
                 ))}
 
-                {allTasks.length > 2 && (
+                {allTasks.length > 3 && (
                   <button
                     type="button"
                     onClick={() => navigate(pathTasklist)}

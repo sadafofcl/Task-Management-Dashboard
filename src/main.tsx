@@ -21,7 +21,6 @@ const router=createBrowserRouter(
       <Route path={pathTasklist} element={<TaskList/>}/>
       <Route path={`${pathTaskView}/:id`} element={<FullTaskView/>}/>
       <Route path={`${pathEditView}/:id`} element={<EditTask/>}/>
-
     </Route>
   )
 )

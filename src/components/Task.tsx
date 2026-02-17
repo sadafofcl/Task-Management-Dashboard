@@ -1,10 +1,10 @@
 import { Formik, Form, ErrorMessage, Field } from "formik";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { pathSubTask, categories, pathDashboard } from "@/constants";
 import { ArrowLeft } from "lucide-react";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { toast } from "sonner"
+import { toast } from "sonner";
 
 interface SubTaskType {
   title: string;
@@ -23,12 +23,11 @@ interface MainTaskType {
 }
 
 const MainTaskSchema = Yup.object().shape({
-  date: Yup.string()
-    .required("* Date is Required"),
-    // .matches(
-    //   /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
-    //   "* Date must be in DD/MM/YYYY format",
-    // ),
+  date: Yup.string().required("* Date is Required"),
+  // .matches(
+  //   /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
+  //   "* Date must be in DD/MM/YYYY format",
+  // ),
   title: Yup.string().required("* Title Required"),
   description: Yup.string().required("* Description Required"),
   category: Yup.string().required("* Please select any one category"),
@@ -45,14 +44,8 @@ export default function Task() {
   );
 
   const handleContinueToSubtasks = (values: typeof initialValues) => {
-    const newTask: MainTaskType = {
-      ...values,
-      id: Date.now().toString(),
-    };
-    const updateSaved = [...savedTasks, newTask];
-    setSavedTasks(updateSaved);
-
-    navigate(`${pathSubTask}/${newTask.id}`);
+    const tempId = Date.now().toString();
+    navigate(`${pathSubTask}/${tempId}`, { state: { mainTaskData: values } });
   };
 
   const handleSubmit = (values: typeof initialValues) => {
@@ -62,19 +55,20 @@ export default function Task() {
     };
     const updateSaved = [...savedTasks, newTask];
     setSavedTasks(updateSaved);
-    toast.success("Task has been created")
+    toast.success("Task has been created");
     navigate(pathDashboard);
   };
 
+  const location = useLocation();
   const initialValues = {
     id: "",
-    date: "",
-    title: "",
-    description: "",
-    category: "",
-    subtaskRadio: "",
+    date: location.state?.mainTaskData?.date ?? "",
+    title: location.state?.mainTaskData?.title ?? "",
+    description: location.state?.mainTaskData?.description ?? "",
+    category: location.state?.mainTaskData?.category ?? "",
+    subtaskRadio: location.state?.mainTaskData?.subtaskRadio ?? "",
   };
-
+  
   return (
     <div className="min-h-screen bg-gray-100 p-10">
       <Formik

@@ -1,10 +1,11 @@
 import { Formik, Form, ErrorMessage, Field, FieldArray } from "formik";
 import * as Yup from "yup";
-import { pathDashboard, subCategories } from "@/constants";
-import { useNavigate, useParams } from "react-router-dom";
+import { pathDashboard, pathTask, subCategories } from "@/constants";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import { useLocation } from "react-router-dom";
 
 interface SubTaskType {
   title: string;
@@ -29,51 +30,48 @@ const SubTaskSchema = Yup.object().shape({
       title: Yup.string().required("* Title Required"),
       description: Yup.string().required("* Description Required"),
       category: Yup.string().required("* Please select category"),
-      status: Yup.string().required("* Please enter the status of your subtask"),
+      status: Yup.string().required(
+        "* Please enter the status of your subtask",
+      ),
     }),
   ),
 });
 
 export default function SubTasks() {
   const navigate = useNavigate();
-  const { id } = useParams();
+  const location = useLocation();
+  const mainTaskData = location.state?.mainTaskData;
 
-  const [allTasks, setAllTasks] = useLocalStorage<MainTaskType[]>("savedTasks", []);
+  const [savedTasks, setSavedTasks] = useLocalStorage<MainTaskType[]>(
+    "savedTasks",
+    [],
+  );
 
-  const handleBack = () => navigate(pathDashboard);
+  const handleBack = () => {
+    navigate(pathTask, { state: { mainTaskData } });
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-10">
       <Formik
         initialValues={{
-          subtasks: [
-            { title: "", description: "", category: "", status: "" },
-          ],
+          subtasks: [{ title: "", description: "", category: "", status: "" }],
         }}
         onSubmit={(values) => {
-          if (!id) {
-            navigate(pathDashboard);
+          if (!mainTaskData) {
+            toast.error("Session expired. Please create your main task first.");
+            navigate(pathTask);
             return;
           }
 
-          const parentTask = allTasks.find((task:MainTaskType) => task.id === id);
-          if (!parentTask) {
-            console.error("Parent task not found");
-            navigate(pathDashboard);
-            return;
-          }
-
-          const updatedTask = allTasks.map((task: MainTaskType) => {
-            if (task.id === id)
-              return {
-                ...task,
-                subtasks: values.subtasks,
-              };
-            return task;
-          });
-
-          setAllTasks(updatedTask);
-          toast.success("Task has been created with these subtasks")
+          const newTask: MainTaskType = {
+            ...mainTaskData,
+            id: Date.now().toString(),
+            subtasks: values.subtasks,
+          };
+          const updateSaved = [...savedTasks, newTask];
+          setSavedTasks(updateSaved);
+          toast.success("Task has been created with these subtasks");
           navigate(pathDashboard);
         }}
         validationSchema={SubTaskSchema}

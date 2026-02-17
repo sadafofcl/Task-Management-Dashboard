@@ -46,17 +46,25 @@ export default function FullTaskView() {
     );
   }
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate(pathDashboard);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 p-10">
       <div className="max-w-4xl mx-auto bg-white p-8 border-2 border-black rounded-lg">
         <h1 className="text-3xl font-bold mb-8 text-center border-b-4 border-black pb-4">
           Task Details
         </h1>
-        
+
         <div className="flex gap-4 mb-6">
           <button
             type="button"
-            onClick={() => navigate(pathDashboard)}
+            onClick={handleBack}
             className="p-2 flex items-center gap-2 bg-black text-white border-2 border-black rounded cursor-pointer hover:bg-white hover:text-black transition-colors"
           >
             <ArrowLeft size={16} />
@@ -108,7 +116,7 @@ export default function FullTaskView() {
                   (No. of subtasks : {task.subtasks.length})
                 </span>
               </h2>
-              {task.subtasks.map((subtask: SubTaskType, index: any) => (
+              {task.subtasks.map((subtask: SubTaskType, index: number) => (
                 <div
                   key={index}
                   className="border-2 border-gray-300 p-4 mb-4 rounded-md bg-gray-50"
